@@ -15,6 +15,22 @@
 	<properties>
 		<packageName>my.bookshop</packageName>
 	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>2.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sap.cloud.servicesdk.prov</groupId>
+			<artifactId>cf-xsa-util</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	    <dependency>
+	        <groupId>org.eclipse.persistence</groupId>
+	        <artifactId>javax.persistence</artifactId>
+	    </dependency>		
+	</dependencies>
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
 		<resources>
