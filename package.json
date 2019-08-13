@@ -12,7 +12,7 @@
         "srv"
     ],
     "dependencies": {
-        "@sap/cds": "^3.10.0",
+        "@sap/cds": "^3.13.0",
         "express": "^4.17.1",
         "hdb": "^0.17.0"
     },

@@ -1,24 +1,36 @@
 package my.bookshop;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import com.sap.cloud.sdk.service.prov.api.*;
-import com.sap.cloud.sdk.service.prov.api.annotations.*;
-import com.sap.cloud.sdk.service.prov.api.exits.*;
-import com.sap.cloud.sdk.service.prov.api.request.*;
-import com.sap.cloud.sdk.service.prov.api.response.*;
-import org.slf4j.*;
-
-import java.util.UUID;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import com.sap.cloud.sdk.service.prov.api.EntityData;
+import com.sap.cloud.sdk.service.prov.api.ExtensionHelper;
+import com.sap.cloud.sdk.service.prov.api.annotations.AfterQuery;
+import com.sap.cloud.sdk.service.prov.api.annotations.AfterRead;
+import com.sap.cloud.sdk.service.prov.api.annotations.BeforeRead;
+import com.sap.cloud.sdk.service.prov.api.exits.BeforeReadResponse;
+import com.sap.cloud.sdk.service.prov.api.operations.Create;
+import com.sap.cloud.sdk.service.prov.api.request.CreateRequest;
+import com.sap.cloud.sdk.service.prov.api.request.QueryRequest;
+import com.sap.cloud.sdk.service.prov.api.request.ReadRequest;
+import com.sap.cloud.sdk.service.prov.api.response.CreateResponse;
+import com.sap.cloud.sdk.service.prov.api.response.QueryResponse;
+import com.sap.cloud.sdk.service.prov.api.response.QueryResponseAccessor;
+import com.sap.cloud.sdk.service.prov.api.response.ReadResponse;
+import com.sap.cloud.sdk.service.prov.api.response.ReadResponseAccessor;
 import com.sap.demo.bookshop.jpa.my.bookshop.Books;
 import com.sap.demo.bookshop.jpa.my.bookshop.Orders;
+
 import org.apache.olingo.odata2.api.exception.ODataApplicationException;
-import com.sap.cloud.sdk.service.prov.api.operations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OrdersService {
 
@@ -26,7 +38,7 @@ public class OrdersService {
 
 	@BeforeRead(entity = "Orders", serviceName = "CatalogService")
 	public BeforeReadResponse beforeReadOrders(ReadRequest req, ExtensionHelper h) {
-		LOG.error("##### Orders - beforeReadOrders ########");
+		LOG.info("##### Orders - beforeReadOrders ########");
 		return BeforeReadResponse.setSuccess().response();
 	}
 
@@ -38,7 +50,16 @@ public class OrdersService {
 	}
 
 	@AfterQuery(entity = "Orders", serviceName = "CatalogService")
-	public QueryResponse afterQueryOrders(QueryRequest req, QueryResponseAccessor res, ExtensionHelper h) {
+	public QueryResponse afterQueryOrders(QueryRequest req, QueryResponseAccessor res, ExtensionHelper h)
+			throws NamingException {
+		LOG.error("##### Orders - afterQueryOrders ########");
+		EntityManager em = (EntityManager) (new InitialContext()).lookup("java:comp/env/jpa/default/pc");
+		Query query = em.createQuery("SELECT TITLE FROM MY_BOOKSHOP_BOOKS");
+		List<String> list = query.getResultList();
+		for (String e : list) {
+			LOG.error("Orders TITLE: " + e);
+		}
+
 		List<EntityData> dataList = res.getEntityDataList(); // original list
 		List<EntityData> modifiedList = new ArrayList<EntityData>(dataList.size()); // modified list
 		for (EntityData ed : dataList) {
@@ -73,9 +94,13 @@ public class OrdersService {
 
 		// Finally, to return the newly created entity in the response, we create an
 		// EntityData representation of the order.
-		EntityData createdEntity = EntityData.getBuilder(createRequest.getData()).addElement("ID", order.getID())
-				.addElement("book", order.getBook()).addElement("buyer", order.getBuyer())
-				.addElement("date", order.getDate()).addElement("amount", order.getAmount()).buildEntityData("Orders");
+		EntityData createdEntity = EntityData.getBuilder(createRequest.getData())
+				.addElement("ID", order.getID())
+				.addElement("book", order.getBook())
+				.addElement("buyer", order.getBuyer())
+				.addElement("date", order.getDate())
+				.addElement("amount", order.getAmount())
+				.buildEntityData("Orders");
 
 		return CreateResponse.setSuccess().setData(createdEntity).response();
 	}
