@@ -2,7 +2,7 @@ ID: bookshop
 _schema-version: "2.1"
 version: 0.0.1
 modules:
-  - name: bookshop-db
+  - name: bookshop-java-db
     type: hdb
     path: db
     parameters:
@@ -10,16 +10,19 @@ modules:
       disk-quota: 256M
     requires:
       - name: bookshop-db-hdi-container
-  - name: bookshop-srv
+  - name: bookshop-java-srv
     type: java
     path: srv
     parameters:
-      memory: 1024M
+      memory: 1536M
     provides:
       - name: srv_api
         properties:
           url: ${default-url}
     requires:
+      - name: bookshop-java-uaa
+        properties:
+          SAP_JWT_TRUST_ACL: '[{"clientid" : "*", "identityzone" : "*"}]'
       - name: bookshop-db-hdi-container
         properties:
           JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomee/webapps/ROOT/WEB-INF/resources.xml:
@@ -28,7 +31,7 @@ modules:
       TARGET_RUNTIME: tomee
       buildpack: sap_java_buildpack
       
-  - name: app
+  - name: bookshop-java-app
     type: html5
     path: app
     parameters:
@@ -44,18 +47,57 @@ modules:
           strictSSL: false
           name: srv_api
           url: ~{url}
-     - name: uaa_bookshop
+     - name: bookshop-java-uaa
+
+  - name: bookshop-flp
+    type: siteentry
+    path: flp
+    parameters:
+       memory: 64M
+    requires:
+     - name: sap-portal-services-host-bookshop
+     - name: bookshop-java-uaa
+     - name: sapui5-provider
+       properties:
+          sapui5url: ~{url}
+
+  - name: bookshop-flp-Content
+    type: sitecontent
+    path: flp-Content
+    parameters:
+       memory: 32M
+    requires:
+     - name: sap-portal-services-client-bookshop
+     - name: bookshop-java-uaa
 
 resources:
   - name: bookshop-db-hdi-container
-    type: com.sap.xs.hdi-container
     properties:
-      hdi-container-name: ${service-name}
+      hdi-container-name: '${service-name}'
+    type: com.sap.xs.hdi-container
 
-  - name: uaa_bookshop
+  - name: bookshop-java-uaa
     parameters:
        path: ./xs-security.json
-       service-plan: application
-       service: xsuaa
-    type: org.cloudfoundry.managed-service
+       service-plan: space
+    type: com.sap.xs.uaa
+
+  - name: sap-portal-services-host-bookshop
+    parameters:
+       config:
+          siteId: bookshop
+    type: com.sap.portal.site-host
+
+  - name: sapui5-provider
+    parameters:
+       provider-id: com.sap.ui5.dist.sapui5-dist-xsa.XSAC_UI5_FESV4:sapui5_fesv4
+       version: '>=1.42.0'
+       provider-nid: mta
+    type: configuration
+
+  - name: sap-portal-services-client-bookshop
+    parameters:
+       config:
+          siteId: bookshop
+    type: com.sap.portal.site-content
 
