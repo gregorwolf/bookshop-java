@@ -57,6 +57,13 @@ modules:
     requires:
      - name: sap-portal-services-host-bookshop
      - name: bookshop-java-uaa
+     - name: srv_api
+       group: destinations
+       properties:
+          forwardAuthToken: true
+          strictSSL: false
+          name: srv_api
+          url: ~{url}
      - name: sapui5-provider
        properties:
           sapui5url: ~{url}

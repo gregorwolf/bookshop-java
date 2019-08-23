@@ -44,6 +44,9 @@
 				}, {
 					"namespace": "",
 					"id": "73c3f80a-5245-4e6c-a51d-d9436b1cb530"
+				}, {
+					"namespace": "",
+					"id": "ffdedd48-0126-4b75-bc95-ed21637493d6"
 				}]
 			}
 		}
@@ -97,6 +100,18 @@
 					"icon": "sap-icon://person-placeholder",
 					"target": {
 						"semanticObject": "app",
+						"action": "show",
+						"parameters": [
+
+						]
+					}
+				}, {
+					"id": "myBooksTile",
+					"title": "{{books_app_title}}",
+					"subTitle": "{{books_app_sub_title}}",
+					"icon": "sap-icon://course-book",
+					"target": {
+						"semanticObject": "books",
 						"action": "show",
 						"parameters": [
 

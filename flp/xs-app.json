@@ -1,4 +1,22 @@
 {
   "routes": [
+  	{
+      "source": "/resources/(.*)",
+      "target": "$1",
+      "localDir": "resources/",
+      "replace": {
+        "pathSuffixes": [
+          "index.html"
+        ],
+        "vars": [
+          "sapui5url"
+        ]
+      }
+    },{
+      "source": "/odata/v2",
+      "authenticationType": "none",
+      "destination": "srv_api",
+      "csrfProtection": false
+    }
   ]
 }
