@@ -49,7 +49,7 @@ modules:
           url: ~{url}
      - name: bookshop-java-uaa
 
-  - name: bookshop-flp
+  - name: bookshop-java-flp
     type: siteentry
     path: flp
     parameters:
@@ -68,7 +68,7 @@ modules:
        properties:
           sapui5url: ~{url}
 
-  - name: bookshop-flp-Content
+  - name: bookshop-java-flp-Content
     type: sitecontent
     path: flp-Content
     parameters:
