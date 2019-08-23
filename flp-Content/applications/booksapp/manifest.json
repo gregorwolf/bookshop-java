@@ -23,6 +23,7 @@
 					}
 				},
 				"indicatorDataSource": {
+					"dataSource": "mainService",
 					"path": "/odata/v2/CatalogService/Books/$count",
 					"refresh": "300",
 					"displayNumberUnit": "Books"

@@ -110,11 +110,16 @@
 					"title": "{{books_app_title}}",
 					"subTitle": "{{books_app_sub_title}}",
 					"icon": "sap-icon://course-book",
+                    "tileType": "sap.ushell.ui.tile.DynamicTile",
+                    "serviceRefreshInterval": 5,
+                    "properties": {
+							"serviceUrl": "/odata/v2/CatalogService/Books/$count",
+							"numberValue": 8
+                    },
 					"target": {
 						"semanticObject": "books",
 						"action": "show",
 						"parameters": [
-
 						]
 					}
 				}]
