@@ -91,7 +91,49 @@
 								"phone": true
 							},
 							"indicatorDataSource": {
-								"path": "/resources/booksapp/BooksDetails.json",
+								"path": "/resources/booksapp/BookDetails.json",
+								"refresh": "1800",
+								"type": "JSON"
+							}
+						}
+					},
+					"outbounds": {}
+				}
+			},
+			"sap.ui": {
+				"_version": "1.3.0",
+				"technology": "UI5"
+			},
+			"sap.ui5": {
+				"componentName": "app",
+				"_version": "1.2.0"
+			},
+			"sap.platform.runtime": {
+				"componentProperties": {
+					"url": "/resources/booksapp"
+				}
+			}
+		},		
+		"booksbrowsecount": {
+			"sap.app": {
+				"_version": "1.3.0",
+				"id": "79c8f516-52ce-45f0-9d7f-14156688f11f",
+				"title": "{{books_app_title}}",
+				"tags": {
+					"keywords": []
+				},
+				"crossNavigation": {
+					"inbounds": {
+						"siteShow": {
+							"semanticObject": "books",
+							"action": "showcount",
+							"deviceTypes": {
+								"desktop": true,
+								"tablet": true,
+								"phone": true
+							},
+							"indicatorDataSource": {
+								"path": "/odata/v2/CatalogService/Books/$count",
 								"refresh": "1800",
 								"type": "JSON"
 							}
@@ -126,24 +168,13 @@
 			"payload": {
 				"tiles": [
 					{
-						"id": "mySapTile",
-						"title": "{{sap_app_title}}",
-						"subTitle": "{{sap_app_sub_title}}",
-						"icon": "sap-icon://world",
+						"id": "myBooksTileCount",
+						"title": "{{books_app_title}}",
+						"subTitle": "{{books_app_sub_title}}",
+						"icon": "sap-icon://course-book",
 						"target": {
-							"semanticObject": "Sap",
-							"action": "show",
-							"parameters": []
-						}
-					},
-					{
-						"id": "myUi5Tile",
-						"title": "{{sample_pers_app_title}}",
-						"subTitle": "{{sample_pers_app_sub_title}}",
-						"icon": "sap-icon://person-placeholder",
-						"target": {
-							"semanticObject": "app",
-							"action": "show",
+							"semanticObject": "books",
+							"action": "showcount",
 							"parameters": []
 						}
 					},
