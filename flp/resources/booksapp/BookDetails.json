@@ -1,0 +1,11 @@
+{
+  "d": {
+    "icon": "sap-icon://course-book",
+    "info": " ",
+    "number": 1,
+    "numberState": "Positive",
+    "numberDigits": 5,
+    "subtitle": "No of Books",
+    "title": "Browse Books"
+  }
+}
