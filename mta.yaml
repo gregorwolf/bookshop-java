@@ -1,6 +1,6 @@
-ID: bookshop
+ID: bookshop-java
 _schema-version: "2.1"
-version: 0.0.1
+version: 0.0.2
 modules:
   - name: bookshop-java-db
     type: hdb
