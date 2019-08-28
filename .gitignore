@@ -10,7 +10,7 @@ _out
 package-lock.json
 *.orig
 mta_archives/
-
+.mta/
 fioriHtmlRunner.html
 .*/fioriHtmlRunner.html
 visual_ext_index.html
