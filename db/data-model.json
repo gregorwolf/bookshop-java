@@ -1,0 +1,100 @@
+{
+  "namespace": "my.bookshop",
+  "definitions": {
+    "my.bookshop.Authors": {
+      "kind": "entity",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "name": {
+          "type": "cds.String"
+        },
+        "books": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "my.bookshop.Books",
+          "on": [
+            {
+              "ref": [
+                "books",
+                "author"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "my.bookshop.Books": {
+      "kind": "entity",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "title": {
+          "type": "cds.String"
+        },
+        "author": {
+          "type": "cds.Association",
+          "target": "my.bookshop.Authors",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "stock": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "my.bookshop.Orders": {
+      "kind": "entity",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "book": {
+          "type": "cds.Association",
+          "target": "my.bookshop.Books",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "buyer": {
+          "type": "cds.String"
+        },
+        "date": {
+          "type": "cds.DateTime"
+        },
+        "amount": {
+          "type": "cds.Integer"
+        }
+      }
+    }
+  },
+  "version": {
+    "csn": "1.0"
+  },
+  "meta": {
+    "creator": "CDS Compiler v1.17.1"
+  },
+  "$version": "1.0"
+}

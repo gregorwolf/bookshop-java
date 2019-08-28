@@ -19,7 +19,7 @@
     "devDependencies": {},
     "scripts": {
         "start": "cds run",
-		"build": "cds build --clean && cds compile db/data-model.cds -o ./",
+        "build": "cds build --clean && cds compile db/data-model.cds -o ./",
         "deploy": "cds deploy"
     },
     "cds": {
