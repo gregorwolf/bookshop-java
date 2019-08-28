@@ -1,0 +1,15 @@
+{
+  "engines": {
+    "node": "4.x"
+  },
+  "name": "site-content-dependencies",
+  "version": "1.6.4",
+  "description": "portal deployer package",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@sap/site-content-deployer": "^1.6.4"
+  },
+  "scripts": {
+    "start": "node --harmony node_modules/@sap/site-content-deployer/deploy.js"
+  }
+}
