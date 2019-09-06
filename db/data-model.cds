@@ -1,4 +1,5 @@
 namespace my.bookshop;
+using { User } from '@sap/cds/common';
 
 entity Books {
   key ID : Integer;
@@ -16,7 +17,7 @@ entity Authors {
 entity Orders {
   key ID : UUID;
   book   : Association to Books;
-  buyer  : String;
+  buyer  : User;
   date   : DateTime;
   amount : Integer;
 }
