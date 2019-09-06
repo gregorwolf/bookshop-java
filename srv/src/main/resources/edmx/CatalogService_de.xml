@@ -109,7 +109,7 @@
         </Annotation>
       </Annotations>
       <Annotations Target="CatalogService.Orders/buyer" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="User ID"/>
+        <Annotation Term="Common.Label" String="Benutzer-ID"/>
       </Annotations>
     </Schema>
   </edmx:DataServices>

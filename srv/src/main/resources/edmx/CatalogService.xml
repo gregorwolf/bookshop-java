@@ -3,6 +3,9 @@
   <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
     <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
   </edmx:Reference>
+  <edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
   <edmx:DataServices m:DataServiceVersion="2.0">
     <Schema Namespace="CatalogService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
       <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
@@ -42,7 +45,7 @@
         </Key>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <NavigationProperty Name="book" Relationship="CatalogService.Orders_book" FromRole="Orders" ToRole="Books"/>
-        <Property Name="buyer" Type="Edm.String"/>
+        <Property Name="buyer" Type="Edm.String" MaxLength="255"/>
         <Property Name="date" Type="Edm.DateTimeOffset"/>
         <Property Name="amount" Type="Edm.Int32"/>
         <Property Name="book_ID" Type="Edm.Int32"/>
@@ -104,6 +107,9 @@
             <PropertyValue Property="Updatable" Bool="false"/>
           </Record>
         </Annotation>
+      </Annotations>
+      <Annotations Target="CatalogService.Orders/buyer" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="User ID"/>
       </Annotations>
     </Schema>
   </edmx:DataServices>
