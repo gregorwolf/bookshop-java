@@ -49,6 +49,24 @@ modules:
           url: ~{url}
      - name: bookshop-java-uaa
 
+  - name: bookshop-java-appadmin
+    type: html5
+    path: appadmin
+    parameters:
+       disk-quota: 256M
+       memory: 256M
+    build-parameters:
+       builder: grunt
+    requires:
+     - name: bookshop-java-uaa
+     - name: srv_api
+       group: destinations
+       properties:
+          forwardAuthToken: true
+          strictSSL: false
+          name: srv_api
+          url: ~{url}
+
   - name: bookshop-java-flp
     type: siteentry
     path: flp
