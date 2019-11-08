@@ -594,8 +594,55 @@
             }
           ]
         },
+        "chapters": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "my.bookshop.Chapters",
+          "on": [
+            {
+              "ref": [
+                "chapters",
+                "book"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
         "stock": {
           "type": "cds.Integer"
+        }
+      }
+    },
+    "my.bookshop.Chapters": {
+      "kind": "entity",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "book": {
+          "type": "cds.Association",
+          "target": "my.bookshop.Books",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "number": {
+          "type": "cds.Integer"
+        },
+        "name": {
+          "type": "cds.String"
         }
       }
     },

@@ -14,10 +14,15 @@
       <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
         <EntitySet Name="Authors" EntityType="CatalogService.Authors"/>
         <EntitySet Name="Books" EntityType="CatalogService.Books"/>
+        <EntitySet Name="Chapters" EntityType="CatalogService.Chapters"/>
         <EntitySet Name="Orders" EntityType="CatalogService.Orders"/>
         <AssociationSet Name="Books_author" Association="CatalogService.Books_author">
           <End Role="Books" EntitySet="Books"/>
           <End Role="Authors" EntitySet="Authors"/>
+        </AssociationSet>
+        <AssociationSet Name="Chapters_book" Association="CatalogService.Chapters_book">
+          <End Role="Chapters" EntitySet="Chapters"/>
+          <End Role="Books" EntitySet="Books"/>
         </AssociationSet>
         <AssociationSet Name="Orders_book" Association="CatalogService.Orders_book">
           <End Role="Orders" EntitySet="Orders"/>
@@ -39,8 +44,19 @@
         <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
         <Property Name="title" Type="Edm.String"/>
         <NavigationProperty Name="author" Relationship="CatalogService.Books_author" FromRole="Books" ToRole="Authors"/>
+        <NavigationProperty Name="chapters" Relationship="CatalogService.Chapters_book" FromRole="Books" ToRole="Chapters"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="author_ID" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="Chapters">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <NavigationProperty Name="book" Relationship="CatalogService.Chapters_book" FromRole="Chapters" ToRole="Books"/>
+        <Property Name="number" Type="Edm.Int32"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="book_ID" Type="Edm.Int32"/>
       </EntityType>
       <EntityType Name="Orders">
         <Key>
@@ -65,6 +81,20 @@
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name="Chapters_book">
+        <End Role="Chapters" Type="CatalogService.Chapters" Multiplicity="*">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Books" Type="CatalogService.Books" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Books">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="Chapters">
+            <PropertyRef Name="book_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
       <Association Name="Orders_book">
         <End Role="Orders" Type="CatalogService.Orders" Multiplicity="*"/>
         <End Role="Books" Type="CatalogService.Books" Multiplicity="0..1"/>
@@ -77,23 +107,6 @@
           </Dependent>
         </ReferentialConstraint>
       </Association>
-      <Annotations Target="CatalogService.EntityContainer/Authors" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Capabilities.DeleteRestrictions">
-          <Record Type="Capabilities.DeleteRestrictionsType">
-            <PropertyValue Property="Deletable" Bool="false"/>
-          </Record>
-        </Annotation>
-        <Annotation Term="Capabilities.InsertRestrictions">
-          <Record Type="Capabilities.InsertRestrictionsType">
-            <PropertyValue Property="Insertable" Bool="false"/>
-          </Record>
-        </Annotation>
-        <Annotation Term="Capabilities.UpdateRestrictions">
-          <Record Type="Capabilities.UpdateRestrictionsType">
-            <PropertyValue Property="Updatable" Bool="false"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="CatalogService.EntityContainer/Books" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Capabilities.DeleteRestrictions">
           <Record Type="Capabilities.DeleteRestrictionsType">

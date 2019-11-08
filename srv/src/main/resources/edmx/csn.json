@@ -6,11 +6,7 @@
     },
     "CatalogService.Authors": {
       "kind": "entity",
-      "@Capabilities.DeleteRestrictions.Deletable": false,
-      "@Capabilities.InsertRestrictions.Insertable": false,
-      "@Capabilities.UpdateRestrictions.Updatable": false,
       "@cds.persistence.name": "CATALOGSERVICE_AUTHORS",
-      "@readonly": true,
       "query": {
         "SELECT": {
           "from": {
@@ -94,6 +90,28 @@
             }
           ]
         },
+        "chapters": {
+          "@cds.persistence.name": "CHAPTERS",
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "CatalogService.Chapters",
+          "on": [
+            {
+              "ref": [
+                "chapters",
+                "book"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
         "stock": {
           "@cds.persistence.name": "STOCK",
           "type": "cds.Integer"
@@ -101,6 +119,53 @@
         "author_ID": {
           "@cds.persistence.name": "AUTHOR_ID",
           "@odata.foreignKey4": "author",
+          "type": "cds.Integer"
+        }
+      },
+      "$syntax": "projection"
+    },
+    "CatalogService.Chapters": {
+      "kind": "entity",
+      "@cds.persistence.name": "CATALOGSERVICE_CHAPTERS",
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "my.bookshop.Chapters"
+            ]
+          }
+        }
+      },
+      "elements": {
+        "ID": {
+          "@cds.persistence.name": "ID",
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "book": {
+          "@cds.persistence.name": "BOOK",
+          "type": "cds.Association",
+          "target": "CatalogService.Books",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "book_ID"
+            }
+          ]
+        },
+        "number": {
+          "@cds.persistence.name": "NUMBER",
+          "type": "cds.Integer"
+        },
+        "name": {
+          "@cds.persistence.name": "NAME",
+          "type": "cds.String"
+        },
+        "book_ID": {
+          "@cds.persistence.name": "BOOK_ID",
+          "@odata.foreignKey4": "book",
           "type": "cds.Integer"
         }
       },
@@ -793,6 +858,28 @@
             }
           ]
         },
+        "chapters": {
+          "@cds.persistence.name": "CHAPTERS",
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "my.bookshop.Chapters",
+          "on": [
+            {
+              "ref": [
+                "chapters",
+                "book"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
         "stock": {
           "@cds.persistence.name": "STOCK",
           "type": "cds.Integer"
@@ -800,6 +887,43 @@
         "author_ID": {
           "@cds.persistence.name": "AUTHOR_ID",
           "@odata.foreignKey4": "author",
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "my.bookshop.Chapters": {
+      "kind": "entity",
+      "@cds.persistence.name": "MY_BOOKSHOP_CHAPTERS",
+      "elements": {
+        "ID": {
+          "@cds.persistence.name": "ID",
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "book": {
+          "@cds.persistence.name": "BOOK",
+          "type": "cds.Association",
+          "target": "my.bookshop.Books",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "book_ID"
+            }
+          ]
+        },
+        "number": {
+          "@cds.persistence.name": "NUMBER",
+          "type": "cds.Integer"
+        },
+        "name": {
+          "@cds.persistence.name": "NAME",
+          "type": "cds.String"
+        },
+        "book_ID": {
+          "@cds.persistence.name": "BOOK_ID",
+          "@odata.foreignKey4": "book",
           "type": "cds.Integer"
         }
       }
