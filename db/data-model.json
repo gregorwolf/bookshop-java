@@ -422,7 +422,7 @@
           "@title": "{i18n>LanguageCode}",
           "key": true,
           "type": "cds.String",
-          "length": 5
+          "length": 14
         },
         "texts": {
           "type": "cds.Composition",
@@ -488,7 +488,6 @@
           "@cds.on.update": {
             "=": "$now"
           },
-          "@odata.etag": true,
           "@odata.on.update": {
             "#": "now"
           },
@@ -929,7 +928,7 @@
           "@title": "{i18n>LanguageCode}",
           "key": true,
           "type": "cds.String",
-          "length": 5
+          "length": 14
         },
         "texts": {
           "type": "cds.Composition",
@@ -1012,7 +1011,7 @@
           "@title": "{i18n>LanguageCode}",
           "key": true,
           "type": "cds.String",
-          "length": 5
+          "length": 14
         }
       }
     },
@@ -1034,7 +1033,7 @@
     "csn": "1.0"
   },
   "meta": {
-    "creator": "CDS Compiler v1.17.2"
+    "creator": "CDS Compiler v1.19.2"
   },
   "$version": "1.0"
 }

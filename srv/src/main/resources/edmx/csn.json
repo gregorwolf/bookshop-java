@@ -1,7 +1,8 @@
 {
   "definitions": {
     "CatalogService": {
-      "kind": "service"
+      "kind": "service",
+      "@source": "srv/cat-service.cds"
     },
     "CatalogService.Authors": {
       "kind": "entity",
@@ -139,8 +140,8 @@
         },
         "buyer": {
           "@Common.Label": "{i18n>UserID}",
+          "@Core.Description": "{i18n>UserID.Description}",
           "@cds.persistence.name": "BUYER",
-          "@description": "{i18n>UserID.Description}",
           "type": "cds.String",
           "length": 255
         },
@@ -163,8 +164,8 @@
     "Country": {
       "kind": "type",
       "@Common.Label": "{i18n>Country}",
+      "@Core.Description": "{i18n>CountryCode.Description}",
       "@cds.persistence.name": "COUNTRY",
-      "@description": "{i18n>CountryCode.Description}",
       "type": "cds.Association",
       "target": "sap.common.Countries",
       "keys": [
@@ -178,8 +179,8 @@
     "Currency": {
       "kind": "type",
       "@Common.Label": "{i18n>Currency}",
+      "@Core.Description": "{i18n>CurrencyCode.Description}",
       "@cds.persistence.name": "CURRENCY",
-      "@description": "{i18n>CurrencyCode.Description}",
       "type": "cds.Association",
       "target": "sap.common.Currencies",
       "keys": [
@@ -193,8 +194,8 @@
     "Language": {
       "kind": "type",
       "@Common.Label": "{i18n>Language}",
+      "@Core.Description": "{i18n>LanguageCode.Description}",
       "@cds.persistence.name": "LANGUAGE",
-      "@description": "{i18n>LanguageCode.Description}",
       "type": "cds.Association",
       "target": "sap.common.Languages",
       "keys": [
@@ -208,8 +209,8 @@
     "User": {
       "kind": "type",
       "@Common.Label": "{i18n>UserID}",
+      "@Core.Description": "{i18n>UserID.Description}",
       "@cds.persistence.name": "USER",
-      "@description": "{i18n>UserID.Description}",
       "type": "cds.String",
       "length": 255
     },
@@ -604,7 +605,7 @@
           "@cds.persistence.name": "CODE",
           "key": true,
           "type": "cds.String",
-          "length": 5
+          "length": 14
         },
         "texts": {
           "@cds.persistence.name": "TEXTS",
@@ -676,7 +677,6 @@
             "=": "$now"
           },
           "@cds.persistence.name": "MODIFIEDAT",
-          "@odata.etag": true,
           "@odata.on.update": {
             "#": "now"
           },
@@ -699,13 +699,13 @@
         "createdBy": {
           "@Common.Label": "{i18n>CreatedBy}",
           "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
           "@Core.Immutable": true,
           "@UI.HiddenFilter": true,
           "@cds.on.insert": {
             "=": "$user"
           },
           "@cds.persistence.name": "CREATEDBY",
-          "@description": "{i18n>UserID.Description}",
           "@odata.on.insert": {
             "#": "user"
           },
@@ -715,13 +715,13 @@
         "modifiedBy": {
           "@Common.Label": "{i18n>ChangedBy}",
           "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
           "@Core.Immutable": true,
           "@UI.HiddenFilter": true,
           "@cds.on.update": {
             "=": "$user"
           },
           "@cds.persistence.name": "MODIFIEDBY",
-          "@description": "{i18n>UserID.Description}",
           "@odata.on.update": {
             "#": "user"
           },
@@ -828,8 +828,8 @@
         },
         "buyer": {
           "@Common.Label": "{i18n>UserID}",
+          "@Core.Description": "{i18n>UserID.Description}",
           "@cds.persistence.name": "BUYER",
-          "@description": "{i18n>UserID.Description}",
           "type": "cds.String",
           "length": 255
         },
@@ -1175,7 +1175,7 @@
           "@cds.persistence.name": "CODE",
           "key": true,
           "type": "cds.String",
-          "length": 5
+          "length": 14
         },
         "texts": {
           "@cds.persistence.name": "TEXTS",
@@ -1265,7 +1265,7 @@
           "@cds.persistence.name": "CODE",
           "key": true,
           "type": "cds.String",
-          "length": 5
+          "length": 14
         }
       }
     },
@@ -1290,7 +1290,7 @@
     "csn": "1.0"
   },
   "meta": {
-    "creator": "CDS Compiler v1.17.2"
+    "creator": "CDS Compiler v1.19.2"
   },
   "$version": "1.0",
   "@sql_mapping": "plain"
