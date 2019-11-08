@@ -16,7 +16,9 @@
         "express": "^4.17.1",
         "hdb": "^0.17.1"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "sqlite3": "^4.1.0"
+    },
     "scripts": {
         "start": "cds run",
         "build": "cds build --clean && cds compile db/data-model.cds -o ./",
@@ -25,11 +27,17 @@
     "cds": {
         "requires": {
             "db": {
-                "kind": "hana",
+                "kind": "sqlite",
                 "model": [
                     "db",
                     "srv"
-                ]
+                ],
+                "credentials": {
+                    "database": "bookshop.db"
+                },
+                "[production]": {
+                    "kind": "hana"
+                }
             }
         },
         "odata": {
