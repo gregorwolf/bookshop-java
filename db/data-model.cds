@@ -5,7 +5,15 @@ entity Books {
   key ID : Integer;
   title  : String;
   author : Association to Authors;
+  chapters : Composition of many Chapters on chapters.book = $self;
   stock  : Integer;
+}
+
+entity Chapters {
+    key ID : Integer;
+    book : Association to Books;
+    number : Integer;
+    name    : String;
 }
 
 entity Authors {
