@@ -1,7 +1,7 @@
 package my.bookshop;
 
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,8 +82,8 @@ public class OrdersService {
 		// and set the object reference to the ordered book. All other attributes of the
 		// Orders entity remain unchanged (for example, the buyer).
 		Orders order = createRequest.getData().as(Orders.class);
-		order.setID(UUID.randomUUID().toString());
-		order.setDate(new Date());
+		order.setId(UUID.randomUUID().toString());
+		order.setDate(Instant.now());
 		order.setAmount(1000);
 		order.setBook(em.find(Books.class, createRequest.getData().getElementValue("book_ID")));
 
@@ -95,7 +95,7 @@ public class OrdersService {
 		// Finally, to return the newly created entity in the response, we create an
 		// EntityData representation of the order.
 		EntityData createdEntity = EntityData.getBuilder(createRequest.getData())
-				.addElement("ID", order.getID())
+				.addElement("ID", order.getId())
 				.addElement("book", order.getBook())
 				.addElement("buyer", order.getBuyer())
 				.addElement("date", order.getDate())

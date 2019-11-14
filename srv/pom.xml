@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.sap.cloud.servicesdk.prov</groupId>
@@ -26,20 +26,26 @@
 			<artifactId>cf-xsa-util</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-	    <dependency>
-	        <groupId>org.eclipse.persistence</groupId>
-	        <artifactId>javax.persistence</artifactId>
-	    </dependency>		
-			<!-- 
+		<!-- cds4j -->
+		<dependency>
+			<groupId>com.sap.cds</groupId>
+			<artifactId>cds4j-runtime</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+		</dependency>
+		<!-- 
 				To fix issue with Java 11 and javax.annotation.Generated
 				https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api 
 			-->
-			<dependency>
-				<groupId>javax.annotation</groupId>
-				<artifactId>javax.annotation-api</artifactId>
-				<version>1.3.2</version>
-			</dependency>
-		</dependencies>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
 		<resources>
@@ -92,44 +98,31 @@
 					</filesets>
 				</configuration>
 			</plugin>
-			<!-- Use csn2jpa to generate JPA classes from CSN. -->
+			<!-- Replace csn2jpa with cds4j -->
 			<plugin>
-				<groupId>com.sap.cloud.servicesdk.csn2jpa</groupId>
-				<artifactId>csn2jpa-maven-plugin</artifactId>
-				<version>1.4.3</version>
+				<groupId>com.sap.cds</groupId>
+				<artifactId>cds4j-maven-plugin</artifactId>
+				<version>1.4.1</version>
+				<configuration>
+					<outputDirectory>${project.basedir}/src/gen</outputDirectory>
+				</configuration>
 				<executions>
 					<execution>
+						<id>cds4j-generate-model</id>
 						<phase>generate-resources</phase>
 						<goals>
-							<goal>csn2jpa</goal>
+							<goal>generate</goal>
 						</goals>
+						<configuration>
+							<csnFile>${project.basedir}/../db/data-model.json</csnFile>
+							<basePackage>com.sap.demo.bookshop.jpa</basePackage>
+							<methodStyle>BEAN</methodStyle>
+							<excludes>
+								<exclude>my</exclude>
+							</excludes>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<csnFile>${project.basedir}/../db/data-model.json</csnFile>
-					<outputDirectory>${project.basedir}/src/gen</outputDirectory>
-					<persistenceProvider>org.eclipse.persistence.jpa.PersistenceProvider</persistenceProvider>
-					<basePackage>com.sap.demo.bookshop.jpa</basePackage>
-					<parserMode>tolerant</parserMode>
-					<generatorMode>tolerant</generatorMode>
-				</configuration>
-				<dependencies>
-          <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
-          </dependency>
-          <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>2.3.0.1</version>
-          </dependency>
-          <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.3.2</version>
-          </dependency>		
-        </dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
