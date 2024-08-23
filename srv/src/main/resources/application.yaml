@@ -1,0 +1,21 @@
+
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+  sql:
+    init:
+      schema-locations: classpath:schema-h2.sql
+cds:
+  security:
+    mock:
+      users:
+        admin:
+          password: admin
+          roles[0]: admin
+        user:
+          password: user
+  data-source:
+    auto-config:
+      enabled: false

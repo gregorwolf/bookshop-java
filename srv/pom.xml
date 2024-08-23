@@ -1,260 +1,160 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
-		<groupId>com.sap.cloud.servicesdk.prov</groupId>
-		<artifactId>projects-parent-odatav2</artifactId>
-		<version>1.33.0</version>
+		<artifactId>bookshop-java-parent</artifactId>
+		<groupId>com.sap.capire</groupId>
+		<version>${revision}</version>
 	</parent>
-	<artifactId>bookshop-srv</artifactId>
-	<groupId>customer</groupId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<name>bookshop-srv</name>
-	<properties>
-		<packageName>my.bookshop</packageName>
-	</properties>
+
+	<artifactId>bookshop-java</artifactId>
+	<packaging>jar</packaging>
+
+	<name>bookshop-java</name>
+
+	<!-- ACTUAL DEPENDENCIES -->
 	<dependencies>
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>eclipselink</artifactId>
-			<version>2.7.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sap.cloud.servicesdk.prov</groupId>
-			<artifactId>cf-xsa-util</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<!-- cds4j -->
+		<!-- CDS SPRING BOOT STARTER -->
 		<dependency>
 			<groupId>com.sap.cds</groupId>
-			<artifactId>cds4j-runtime</artifactId>
-			<version>1.4.1</version>
+			<artifactId>cds-starter-spring-boot</artifactId>
 		</dependency>
+
+		<!-- ODATA PROTOCOL ADAPTER -->
 		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>javax.persistence</artifactId>
+			<groupId>com.sap.cds</groupId>
+			<artifactId>cds-adapter-odata-v4</artifactId>
+			<scope>runtime</scope>
 		</dependency>
-		<!-- 
-				To fix issue with Java 11 and javax.annotation.Generated
-				https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api 
-			-->
+
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>1.3.2</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
+
 	<build>
-		<finalName>${project.artifactId}-${project.version}</finalName>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>connection.properties</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>src/gen/resources</directory>
-			</resource>
-		</resources>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
-			<!-- Add src/gen as source folder -->
+			<!-- SPRING BOOT PLUGIN -->
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.0.0</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring.boot.version}</version>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
 				<executions>
 					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
+						<id>repackage</id>
 						<goals>
-							<goal>add-source</goal>
+							<goal>repackage</goal>
 						</goals>
 						<configuration>
-							<sources>
-								<source>src/gen/java</source>
-							</sources>
-							<resources>
-								<resource>
-									<directory>src/gen/resources</directory>
-								</resource>
-							</resources>
+							<classifier>exec</classifier>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Clean src/gen/java -->
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>src/gen/java</directory>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-			<!-- Replace csn2jpa with cds4j -->
+
+			<!-- STEPS TO BUILD CDS MODEL AND GENERATE POJOs -->
 			<plugin>
 				<groupId>com.sap.cds</groupId>
-				<artifactId>cds4j-maven-plugin</artifactId>
-				<version>1.4.1</version>
-				<configuration>
-					<outputDirectory>${project.basedir}/src/gen</outputDirectory>
-				</configuration>
+				<artifactId>cds-maven-plugin</artifactId>
+				<version>${cds.services.version}</version>
 				<executions>
 					<execution>
-						<id>cds4j-generate-model</id>
-						<phase>generate-resources</phase>
+						<id>cds.clean</id>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>cds.install-node</id>
+						<goals>
+							<goal>install-node</goal>
+						</goals>
+						<configuration>
+							<skip>${cdsdk-global}</skip>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>cds.install-cdsdk</id>
+						<goals>
+							<goal>install-cdsdk</goal>
+						</goals>
+						<configuration>
+							<skip>${cdsdk-global}</skip>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>cds.resolve</id>
+						<goals>
+							<goal>resolve</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>cds.build</id>
+						<goals>
+							<goal>cds</goal>
+						</goals>
+						<configuration>
+							<commands>
+								<command>build --for java</command>
+								<command>deploy --to h2 --dry &gt; "${project.basedir}/src/main/resources/schema-h2.sql"</command>
+							</commands>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>cds.generate</id>
 						<goals>
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<csnFile>${project.basedir}/../db/data-model.json</csnFile>
-							<basePackage>com.sap.demo.bookshop.jpa</basePackage>
-							<methodStyle>BEAN</methodStyle>
-							<excludes>
-								<exclude>my</exclude>
-							</excludes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
-				<configuration>
-					<executable>npm</executable>
-					<workingDirectory>${project.basedir}/../</workingDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<id>npm install</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<arguments>
-								<argument>install</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>npm run build</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<arguments>
-								<argument>run</argument>
-								<argument>build</argument>
-							</arguments>
+							<basePackage>cds.gen</basePackage>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
+
 	<profiles>
+		<!-- A profile that uses global installation of @sap/cds-dk -->
 		<profile>
+			<id>cdsdk-global</id>
 			<activation>
 				<property>
-					<name>devmode</name>
+					<name>env.CDSDK_GLOBAL</name>
 					<value>true</value>
 				</property>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>3.0.0</version>
-						<configuration>
-							<webResources combine.children="append">
-								<resource>
-									<directory>${project.build.sourceDirectory}</directory>
-									<targetPath>sources</targetPath>
-								</resource>
-							</webResources>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>only-eclipse</id>
-			<activation>
-				<property>
-					<name>m2e.version</name>
-				</property>
-			</activation>
-			<dependencies>
-				<!-- EclipseLink -->
-				<dependency>
-					<groupId>org.eclipse.persistence</groupId>
-					<artifactId>eclipselink</artifactId>
-					<version>2.7.4</version>
-				</dependency>
-				<!-- JTA Support -->
-				<dependency>
-					<groupId>com.sap.cloud.servicesdk.prov</groupId>
-					<artifactId>cf-xsa-util</artifactId>
-					<version>${project.parent.version}</version>
-				</dependency>
-				<!-- JPA -->
-				<dependency>
-					<groupId>org.eclipse.persistence</groupId>
-					<artifactId>javax.persistence</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-					<scope>compile</scope>
-				</dependency>
-				<dependency>
-					<groupId>com.sap.cloud.db.jdbc</groupId>
-					<artifactId>ngdbc</artifactId>
-					<version>2.4.62</version>
-					<type>pom</type>
-					<scope>compile</scope>
-				</dependency>
-			</dependencies>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.eclipse.m2e</groupId>
-							<artifactId>lifecycle-mapping</artifactId>
-							<version>1.0.0</version>
-							<configuration>
-								<lifecycleMappingMetadata>
-									<pluginExecutions>
-										<pluginExecution>
-											<pluginExecutionFilter>
-												<groupId>org.codehaus.mojo</groupId>
-												<artifactId>exec-maven-plugin</artifactId>
-												<versionRange>[1.6.0,)</versionRange>
-												<goals>
-													<goal>exec</goal>
-												</goals>
-											</pluginExecutionFilter>
-											<action>
-												<ignore/>
-											</action>
-										</pluginExecution>
-									</pluginExecutions>
-								</lifecycleMappingMetadata>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
+			<properties>
+				<cdsdk-global>true</cdsdk-global>
+			</properties>
 		</profile>
 	</profiles>
 </project>

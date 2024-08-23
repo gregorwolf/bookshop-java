@@ -1,27 +1,5 @@
 {
-    "build": {
-        "target": ".",
-        "tasks": [
-            {
-                "for": "hana",
-                "src": "db",
-                "options": {
-                    "model": [
-                        "db",
-                        "srv"
-                    ]
-                }
-            },
-            {
-                "for": "java-cf",
-                "src": "srv",
-                "options": {
-                    "model": [
-                        "db",
-                        "srv"
-                    ]
-                }
-            }
-        ]
+    "sql": {
+        "native_hana_associations" : false
     }
 }
